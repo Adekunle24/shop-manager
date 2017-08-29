@@ -1,0 +1,14 @@
+{
+  "name": "shopmanager",
+  "version": "1.0.0",
+  "description": "This application manages all items in a shop",
+  "main": "main.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "author": "adekunle",
+  "license": "ISC"
+}

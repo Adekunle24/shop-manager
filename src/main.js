@@ -1,4 +1,7 @@
 //The name of the application is ShopManager
-const fruits = {"name":"ShopManager"};
-let items = fruits;
-console.log(items);
+import shop from './models/shop';
+import item from './models/item';
+
+const myShop = new shop();
+let indomie = new item('Indomie',10,30);
+console.log(myShop.showWorth());

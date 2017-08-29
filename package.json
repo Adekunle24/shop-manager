@@ -7,8 +7,17 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "test"
+    "start": "babel-node src/main.js --presets es2015,stage-2",
+    "test": "mocha --compilers js:babel-core/register tests/test.js"
   },
   "author": "adekunle",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "chai": "^4.1.1",
+    "mocha": "^3.5.0"
+  }
 }

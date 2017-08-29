@@ -1,23 +1,25 @@
-import item from './item';
-
-
-//a constant to hold the shop class
-const shop = class Shop extends Array{ 
-    //constructor for the shop class
+import Item from './item';
+// a constant to hold the shop class
+// OOP feature: inheritance
+// Shop  class inherits from class Array to expose forEach method for iteration
+const shop = class Shop extends Array { 
+    // constructor for the shop class
     constructor(name){
-        //privary with priviledged methods
+        // privacy with priviledged methods
         let _name = name;
         let _netWorth = 0;
         let _items = [];
-        super();
+
+        // call the base class Array
+        super(_items);
         
-        //outputs networth of shop
-        this.showWorth = function(){
+        // outputs networth of shop
+        this.showWorth = () => {
             return  _netWorth;
         }
-        //outputs name of shop
-        this.showName = function(){
-            //shop name must be string
+        // outputs name of shop
+        this.showName = () => {
+            // shop name must be string
             if(typeof(_name)=='string')
             {
                 return `${_name}`;
@@ -26,29 +28,31 @@ const shop = class Shop extends Array{
                 return undefined;
             }
         }
-        //appends an item to shop catalogue
-        this.addItem = function (newItem){
+        // appends an item to shop catalogue
+        this.addItem =  (newItem) => {
             _netWorth += newItem.cost();
             return _items.push(newItem)+1;
         }
-        //output total number of items in shop
-        this.itemsCount = function(){
+        // output total number of items in shop
+        this.itemsCount = () => {
             return _items.length;
         }
-        //show details of stocks in shop
-        this.showStock = function(){
-            for(let storedItem of _items)
-            {
-                console.log(`${storedItem.quantity()} quantity of ${storedItem.showName()} at ${storedItem.pricePerEach()} per each`);
-            }
+        // show details of stocks in shop
+        this.showStock = () => {
+        // OOP feature: Abstraction
+        // I made use of the forEach method that belongs to Array class without concerning myself with its implementation
+            _items.forEach((storedItem) =>  {
+               console.log(`${storedItem.quantity()} quantity of ${storedItem.showName()} at ${storedItem.pricePerEach()} per each`);
+            }, this);
+
         }
-        //removes all existence of item in shop catalogue
-        this.removeItem = function(index){
-            //removes item via the name or index
+        //  removes all existence of item in shop catalogue
+        this.removeItem = (index) => {
+            //  removes item via the name or index
             if(typeof(index)=='string')
             {
-                const indexFound = this.seachFor(index);
-                //if item was found
+                const indexFound = this.find(index);
+                // if item was found
                 if(indexFound!=-1)
                 {
                     this.removeItem(indexFound);
@@ -61,21 +65,21 @@ const shop = class Shop extends Array{
                 _items.splice(index-2,1);
             }
         }
-        //reduce quantity of an item in stock
-        this.reduceStock = function(query,quantity){
-           const itemIndex = this.seachFor(query);
-           //if item was found
+        // reduce quantity of an item in stock
+        this.reduceStock = (query,quantity) => {
+           const itemIndex = this.find(query);
+           // if item was found
            if(itemIndex!=-1)
            {
                 const foundItem = _items[itemIndex];
-                //check if the quantity of items in stock exceeds the quantity of items to remove
+                // check if the quantity of items in stock exceeds the quantity of items to remove
                 if(foundItem.quantity()>quantity)
                 {
-                    //reduce quantity in stock
+                    // reduce quantity in stock
                     foundItem.setQuantity(foundItem.quantity()-quantity);
-                    console.log(`Reducing ${foundItem.showName()} stock by ${quantity}. Remaining:quantity: ${foundItem.quantity()}`)
-                    //reduce shop's networth
+                    // reduce shop's networth
                     _netWorth -= foundItem.pricePerEach()*quantity;
+                    return foundItem.quantity();
                 }
                 else{
                     this.removeItem(itemIndex);
@@ -85,14 +89,17 @@ const shop = class Shop extends Array{
                 return -1;
            }
         }
-        //search for an item in the shop
-        this.seachFor = function(query){
+        // search for an item in the shop
+        // OOP feature: polymorphism
+        /* the find method exist for this class and the parent class(Array)
+        *  this depicts polymorphism as the find method exist in two forms
+        */
+        this.find = (query) =>{
             const foundIndex = _items.findIndex((currentItem) => currentItem.showName().includes(query));
-            //if item was found
+            // if item was found
             if(foundIndex!= -1)
             {
                 const foundItem = _items[foundIndex];
-                console.log(`Found ${foundItem.quantity()} quantity of ${foundItem.showName()} at ${foundItem.pricePerEach()} per each`);
                 return foundIndex;
             }
             else{
